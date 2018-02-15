@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2018, Damien Gallagher. All rights reserved.
+ */
 package com.engagetech.config;
 
 import static org.junit.Assert.assertNotNull;

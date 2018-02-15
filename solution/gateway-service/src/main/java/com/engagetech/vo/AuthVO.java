@@ -3,7 +3,7 @@
  * */
 package com.engagetech.vo;
 
-import java.time.LocalDateTime;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +39,7 @@ public class AuthVO {
 	
 	@NotNull
 	@Column(name = "date_added", nullable = false)
-	private LocalDateTime dateAdded;
+	private Calendar dateAdded;
 
 	public Integer getId() {
 		return id;
@@ -73,18 +73,17 @@ public class AuthVO {
 		this.emailAddress = emailAddress;
 	}
 
-	public LocalDateTime getDateAdded() {
+	public Calendar getDateAdded() {
 		return dateAdded;
 	}
 
-	public void setDateAdded(LocalDateTime dateAdded) {
+	public void setDateAdded(Calendar dateAdded) {
 		this.dateAdded = dateAdded;
 	}
 
 	@Override
 	public String toString() {
-		return "AuthVO [id=" + id + ", apiKey=" + apiKey + ", name=" + name + ", emailAddress=" + emailAddress + "]";
+		return "AuthVO [id=" + id + ", apiKey=" + apiKey + ", name=" + name + ", emailAddress=" + emailAddress
+				+ ", dateAdded=" + dateAdded + "]";
 	}
-	
-
 }

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.engagetech.service.IAuthService;
+import com.engagetech.utils.Constants;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 
@@ -60,12 +61,14 @@ public class GatewayRequestFilter extends ZuulFilter {
 	 */
 	@Override
 	public Object run() {
+		LOGGER.debug("Entered run method");
 		RequestContext ctx = RequestContext.getCurrentContext();
-		HttpServletRequest request = ctx.getRequest();
+		HttpServletRequest httpServletRequest = ctx.getRequest();
 
-		LOGGER.info(String.format("%s request to %s", request.getMethod(), request.getRequestURL().toString()));
-		String apiKey = request.getHeader("x-api-key");
-		LOGGER.info("apiKey:"+apiKey);
+		LOGGER.info(String.format("%s request to %s", httpServletRequest.getMethod(), httpServletRequest.getRequestURL().toString()));
+		
+		String apiKey = httpServletRequest.getHeader(Constants.API_KEY_HEADER);
+		LOGGER.debug("apiKey:"+apiKey);
 		
 		boolean isApiKeyValid = authSevice.isApiKeyValue(apiKey);
 		if (BooleanUtils.isNotTrue(isApiKeyValid)) {
@@ -73,8 +76,10 @@ public class GatewayRequestFilter extends ZuulFilter {
 			LOGGER.error(msg);
 			ctx.setResponseBody(msg);
 			ctx.setSendZuulResponse(false);
+			return null;
 		} 
-			
+
+		LOGGER.debug("Exiting run method");
 		return null;		
 	} 
 

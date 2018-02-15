@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Main entry point for the gateway service
@@ -23,7 +22,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan({ "com.engagetech" })
 @EnableJpaRepositories(basePackages="com.engagetech.repository")
 @EntityScan({ "com.engagetech" })
-@EnableTransactionManagement
 public class GatewayServiceMain {
 
 	/** Private logger variable **/
@@ -35,6 +33,6 @@ public class GatewayServiceMain {
 	 */
 	public static void main(String[] args) {
 		LOGGER.debug("Entered Main Method");
-		SpringApplication.run(GatewayServiceMain.class, args);
+		SpringApplication.run(GatewayServiceMain.class);
 	}
 }

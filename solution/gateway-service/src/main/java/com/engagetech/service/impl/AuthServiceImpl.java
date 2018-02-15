@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.engagetech.repository.AuthRepository;
 import com.engagetech.service.IAuthService;
@@ -35,7 +34,6 @@ public class AuthServiceImpl implements IAuthService {
 	 * @param apiKey
 	 * @return
 	 */
-	@Transactional
 	@Override
 	public boolean isApiKeyValue(String apiKey) {
 		LOGGER.debug("Entered isApiKeyValue - apiKey:{}", apiKey);
