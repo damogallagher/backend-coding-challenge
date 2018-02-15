@@ -155,10 +155,11 @@ gulp.task("html", function() {
 });
 
 // Compile an individual directory's partials
+// Compile an individual directory's partials
 function compilePartials(filepath) {
-	if (process.platform === "win32")
+	/*if (process.platform === "win32")
 		var pathArray = filepath.split("\\");
-	else
+	else*/
 		var pathArray = filepath.split("/");
 
 	pathArray.pop();
@@ -173,10 +174,12 @@ function compilePartials(filepath) {
 			htmlMinifier: settings.minifiy,
 			module: basename + ".partials",
 			path: function(path, base) {
-				if (!base.endsWith("partials/"))
-					base += "partials/";
+				if (process.platform === "win32")
+					var pathArray = path.split("\\");
+				else
+					pathArray = path.split("/");
 
-				return basename + "/" + path.replace(base, "");
+				return basename + "/" + pathArray.pop();
 			}
 		}))
 		.pipe(uglify(settings.uglify))
@@ -184,6 +187,7 @@ function compilePartials(filepath) {
 		.pipe(filesize())
 		.pipe(gulp.dest(destpath));
 };
+
 
 // Compile all partials
 gulp.task("partials", function(done) {
