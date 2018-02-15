@@ -8,5 +8,6 @@
 	<!--  See http://www.liquibase.org/documentation/sql_format.html -->
   <!-- <include file="config/liquibase/initial/1.createDB.sql"/>  -->
   <include file="config/liquibase/initial/1.createDB.xml"/> 
-  <include file="config/liquibase/initial/2.initData.sql"/>
+  <include file="config/liquibase/initial/2.initExpenseData.sql"/>
+  <include file="config/liquibase/initial/3.initAuthData.sql"/>
 </databaseChangeLog> 

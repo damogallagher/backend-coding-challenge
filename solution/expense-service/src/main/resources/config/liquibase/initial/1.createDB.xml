@@ -6,6 +6,23 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="1" author="Damien Gallagher">
+        <createTable tableName="T_EXPENSE">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="value" type="DECIMAL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reason" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>  
+            <column name="date" type="TIMESTAMP" defaultValue="now()">
+                <constraints nullable="false"/>
+            </column>                       
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="Damien Gallagher">
         <createTable tableName="T_AUTH">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
