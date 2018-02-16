@@ -39,6 +39,11 @@ public class ExpenseServiceImpl implements IExpenseService {
 	@Value("${uk.vat.rat}")
 	private Float ukVatRate;
 	
+	
+	public void setUkVatRate(Float ukVatRate) {
+		this.ukVatRate = ukVatRate;
+	}
+
 	/**
 	 * Method to get all expenses
 	 * @return
@@ -69,6 +74,7 @@ public class ExpenseServiceImpl implements IExpenseService {
 			return savedExpense;
 		}
 
+		System.out.println(ukVatRate);
 		BigDecimal totalValue = expenseVO.getTotalValue();
 		BigDecimal ukVatRatePct = new BigDecimal(ukVatRate);
 

@@ -6,7 +6,7 @@ Expenses controller
 
 ******************************************************************************************/
 
-var app = angular.module("expenses.controller", []);
+var app = angular.module("expenses.controller", ['ui.date']);
 
 app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy", function ExpensesCtrl($rootScope, $scope, $config, $restalchemy) {
 	// Update the headings
@@ -36,8 +36,19 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 		});
 	}
 
+	//Function to format the date based on the output from the jquery library into the format we want
+	function formatDate(date) {
+	  var day = date.getDate();
+	  var month = date.getMonth() + 1;
+	  var year = date.getFullYear();
+
+	  return day + '/' + month + '/' + year;
+	}
+
 	$scope.saveExpense = function() {
 		if ($scope.expensesform.$valid) {
+			var formattedDate = formatDate($scope.newExpense.date);
+			$scope.newExpense.date = formattedDate;
 			// Post the expense via REST
 			restExpenses.post($scope.newExpense).then(function(data) {
 				// Reload new expenses list

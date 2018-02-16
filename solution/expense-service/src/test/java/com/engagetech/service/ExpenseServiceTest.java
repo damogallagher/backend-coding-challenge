@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Sort;
 
 import com.engagetech.repository.ExpenseRepository;
 import com.engagetech.service.impl.ExpenseServiceImpl;
@@ -40,6 +41,7 @@ public class ExpenseServiceTest {
 	
 	@Before
 	public void setUp() {
+		expenseService.setUkVatRate(20.0f);
 		newExpenseVO = new ExpenseVO();
 		newExpenseVO = new ExpenseVO();
 		newExpenseVO.setId(1);
@@ -54,7 +56,7 @@ public class ExpenseServiceTest {
 	public void testGetExpenses_NullExpensesReturned() {
 		List<ExpenseVO> dbExpenseList = null;
 		
-		EasyMock.expect(mockExpenseRepository.findAll()).andReturn(dbExpenseList);
+		EasyMock.expect(mockExpenseRepository.findAll(EasyMock.isA(Sort.class))).andReturn(dbExpenseList);
 		EasyMock.replay(mockExpenseRepository);
 		
 		List<ExpenseVO> returnedExpenseList = expenseService.getAllExpenses();
@@ -67,7 +69,7 @@ public class ExpenseServiceTest {
 	public void testGetExpenses_NoExpensesReturned() {
 		List<ExpenseVO> dbExpenseList = new LinkedList<>();
 		
-		EasyMock.expect(mockExpenseRepository.findAll()).andReturn(dbExpenseList);
+		EasyMock.expect(mockExpenseRepository.findAll(EasyMock.isA(Sort.class))).andReturn(dbExpenseList);
 		EasyMock.replay(mockExpenseRepository);
 		
 		List<ExpenseVO> returnedExpenseList = expenseService.getAllExpenses();
@@ -82,7 +84,7 @@ public class ExpenseServiceTest {
 		List<ExpenseVO> dbExpenseList = new LinkedList<>();
 		dbExpenseList.add(newExpenseVO);
 		
-		EasyMock.expect(mockExpenseRepository.findAll()).andReturn(dbExpenseList);
+		EasyMock.expect(mockExpenseRepository.findAll(EasyMock.isA(Sort.class))).andReturn(dbExpenseList);
 		EasyMock.replay(mockExpenseRepository);
 		
 		List<ExpenseVO> returnedExpenseList = expenseService.getAllExpenses();
@@ -98,7 +100,7 @@ public class ExpenseServiceTest {
 		dbExpenseList.add(newExpenseVO);
 		dbExpenseList.add(newExpenseVO);
 		
-		EasyMock.expect(mockExpenseRepository.findAll()).andReturn(dbExpenseList);
+		EasyMock.expect(mockExpenseRepository.findAll(EasyMock.isA(Sort.class))).andReturn(dbExpenseList);
 		EasyMock.replay(mockExpenseRepository);
 		
 		List<ExpenseVO> returnedExpenseList = expenseService.getAllExpenses();

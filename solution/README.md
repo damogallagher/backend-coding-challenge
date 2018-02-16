@@ -2,6 +2,18 @@ README
 ====
 How to run the your solution...
 
+#Insatll components
+#Install gulp and all dependencies
+npm install -g gulp
+npm install
+
+#Insatll bower and dependencies
+npm install -g bower
+bower install
+
+#Start front end server
+gulp
+
 If running using mysql - please create a mysql database called engage_db
 Update gateway-service\src\main\resources\config\application-mysql.properties with your value for spring.datasource.username and spring.datasource.password
 
