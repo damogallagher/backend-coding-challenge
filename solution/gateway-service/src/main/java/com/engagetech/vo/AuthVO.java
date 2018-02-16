@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2018, Damien Gallagher. All rights reserved.
- * */
+ */
 package com.engagetech.vo;
 
 import java.util.Calendar;

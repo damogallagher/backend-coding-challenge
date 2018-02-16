@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.engagetech.service.IExpenseService;
@@ -59,7 +60,7 @@ public class ExpenseRestController {
 	@ApiOperation(notes = "Save An Expense", value = "Save An Expense", nickname = "saveExpense")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Save Expense", response = ExpenseVO.class) })
 	@PostMapping(value = "/")
-	public ExpenseVO saveExpense(@Valid ExpenseVO expenseVO) {
+	public ExpenseVO saveExpense(@Valid @RequestBody ExpenseVO expenseVO) {
 		LOGGER.debug("Entered saveExpense");
 		ExpenseVO savedExpense = expenseService.saveExpense(expenseVO);
 		LOGGER.debug("Exiting saveExpense");

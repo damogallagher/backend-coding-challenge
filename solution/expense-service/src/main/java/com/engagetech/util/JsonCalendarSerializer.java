@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 public class JsonCalendarSerializer extends JsonSerializer<Calendar> {
 	/** Private logger variable **/
 	private static Logger LOGGER = LoggerFactory.getLogger(JsonCalendarSerializer.class);
-	private SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+	private SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT_STR);
 
 	/**
 	 * Method to serialize a json top a calendar
