@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.engagetech.service.IExpenseService;
+import com.engagetech.service.IVatService;
 import com.engagetech.vo.ExpenseVO;
 
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +36,7 @@ public class VatRestController {
 	private static Logger LOGGER = LoggerFactory.getLogger(VatRestController.class);
 
 	@Autowired
-	private IExpenseService expenseService;
+	private IVatService vatService;
 
 
 	/**
@@ -49,8 +49,8 @@ public class VatRestController {
 	@PostMapping(value = {"", "/"})
 	public BigDecimal getTotalVat(@Valid @RequestBody BigDecimal totalPrice) {
 		LOGGER.debug("Entered getTotalVat - totalPrice:{}", totalPrice);
-		//ExpenseVO savedExpense = expenseService.saveExpense(expenseVO);
-		LOGGER.debug("Exiting getTotalVat");
-		return totalPrice;
+		BigDecimal totalVat = vatService.calculateTotalVat(totalPrice);
+		LOGGER.debug("Exiting getTotalVat - totalVat:{}", totalVat);
+		return totalVat;
 	}
 }

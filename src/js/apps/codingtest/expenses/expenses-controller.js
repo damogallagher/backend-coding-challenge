@@ -49,8 +49,16 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 		if ($scope.expensesform.$valid) {
 			var formattedDate = formatDate($scope.newExpense.date);
 			$scope.newExpense.date = formattedDate;
+
+      //Check if a currency is set with the expense
+			var valueArr = $scope.newExpense.total_value.split(" ");
+			if (valueArr.length > 1) {
+				$scope.newExpense.original_currency = valueArr[1];
+			}
+			//Set the total value just to be the value part
+			$scope.newExpense.total_value = valueArr[0];
 			// Post the expense via REST
-			restExpenses.post($scope.newExpense.total_value).then(function(data) {
+			restExpenses.post($scope.newExpense).then(function(data) {
 					// Reload new expenses list
 					loadExpenses();
 					$scope.clearExpense();
@@ -58,11 +66,19 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 		}
 	};
 
-  //Method to get the vat total
+  //Method to get the vat total only if we have a number
   $scope.getTotalVat = function() {
-		console.log("in getVatRate");
-		restVat.post().then(function(vatData) {
-			console.log(" vatData:"+vatData);
+		//get just the value part - incase a currecny is also specified
+		var valueArr = $scope.newExpense.total_value.split(" ");
+		var tempTotalValue = valueArr[0];
+
+		if (isNaN(tempTotalValue)) {
+			//console.log("the value " +$scope.newExpense.total_value+" is not a number");
+			$scope.totalVat = 0.0;
+			return
+		}
+		//call out to rest service to get the vat
+		restVat.post(tempTotalValue).then(function(vatData) {
 			$scope.totalVat = vatData;
 		});
 	}

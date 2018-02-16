@@ -11,14 +11,16 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.engagetech.repository.ExpenseRepository;
-import com.engagetech.rest.ExpenseRestController;
+import com.engagetech.rest.vo.ExchangeRateVO;
+import com.engagetech.service.IExchangeRateService;
 import com.engagetech.service.IExpenseService;
+import com.engagetech.service.IVatService;
 import com.engagetech.util.Constants;
 import com.engagetech.vo.ExpenseVO;
 
@@ -31,19 +33,16 @@ import com.engagetech.vo.ExpenseVO;
 public class ExpenseServiceImpl implements IExpenseService {
 
 	/** Private logger variable **/
-	private static Logger LOGGER = LoggerFactory.getLogger(ExpenseRestController.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(ExpenseServiceImpl.class);
 	
 	@Autowired
 	private ExpenseRepository expenseRepository;
 	
-	@Value("${uk.vat.rat}")
-	private Float ukVatRate;
-	
-	
-	public void setUkVatRate(Float ukVatRate) {
-		this.ukVatRate = ukVatRate;
-	}
+	@Autowired 
+	private IVatService vatService;
 
+	@Autowired
+	private IExchangeRateService exchangeRateService;
 	/**
 	 * Method to get all expenses
 	 * @return
@@ -74,16 +73,38 @@ public class ExpenseServiceImpl implements IExpenseService {
 			return savedExpense;
 		}
 
-		System.out.println(ukVatRate);
+		String currency = expenseVO.getOriginalCurrency();
+		//If currency is not empty - then we need to perform a 
+		if (!StringUtils.isEmpty(currency) && !currency.equalsIgnoreCase(Constants.CURRENCY_GBP)) {
+			ExchangeRateVO exchangeRateVO = exchangeRateService.performGBPConversion(currency, expenseVO.getTotalValue());
+			if (exchangeRateVO == null) {
+				LOGGER.error("Failed to get the exchange rate for the currency:{}", currency);
+				return savedExpense;
+			}
+			
+			expenseVO.setTotalValue(exchangeRateVO.getConvertedValue());
+			expenseVO.setOriginalCurrency(currency.toUpperCase());
+			expenseVO.setOriginalValue(exchangeRateVO.getOriginalValue());
+			expenseVO.setExchangeRate(exchangeRateVO.getConversionRate());
+			
+		} else {
+			//Set the currency to be gdp in the db so we know what it is - as well as original value and exchange rate of 2
+			expenseVO.setOriginalCurrency(Constants.CURRENCY_GBP);
+			expenseVO.setOriginalValue(expenseVO.getTotalValue());
+			expenseVO.setExchangeRate(Constants.BD_ONE);
+		}
+		
 		BigDecimal totalValue = expenseVO.getTotalValue();
-		BigDecimal ukVatRatePct = new BigDecimal(ukVatRate);
+		BigDecimal vatPaid = vatService.calculateTotalVat(totalValue);
+		if (vatPaid == null) {
+			LOGGER.error("Failed to calculate the total vat paid");
+			return savedExpense;
+		}
 
 		//Calculate the vat paid based on the total price
-		BigDecimal vatPaid = totalValue.multiply(ukVatRatePct).divide(Constants.BD_ONE_HUNDRED);
 		BigDecimal totalWithoutVat = totalValue.subtract(vatPaid);
 		
 		//Scale and round to 2 decimal places
-		vatPaid = vatPaid.setScale(Constants.INT_TWO, RoundingMode.HALF_EVEN);
 		totalWithoutVat = totalWithoutVat.setScale(Constants.INT_TWO, RoundingMode.HALF_EVEN);
 
 		expenseVO.setVatPaid(vatPaid);

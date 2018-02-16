@@ -36,12 +36,14 @@ public class ExpenseServiceTest {
 	@Mock
 	private ExpenseRepository mockExpenseRepository;
 	@Mock
+	private IVatService mockVatService;
+	
+	@Mock
 	private DataAccessException mockDataAccessException;
 	private ExpenseVO newExpenseVO;
 	
 	@Before
 	public void setUp() {
-		expenseService.setUkVatRate(20.0f);
 		newExpenseVO = new ExpenseVO();
 		newExpenseVO = new ExpenseVO();
 		newExpenseVO.setId(1);
@@ -49,6 +51,9 @@ public class ExpenseServiceTest {
 		newExpenseVO.setTotalValue(new BigDecimal("9.55"));
 		newExpenseVO.setValueWithoutVat(new BigDecimal("7.64"));
 		newExpenseVO.setVatPaid(new BigDecimal("1.91"));
+		newExpenseVO.setOriginalCurrency(null);
+		newExpenseVO.setExchangeRate(new BigDecimal("0.55"));
+		newExpenseVO.setOriginalValue(new BigDecimal("9.55"));
 		newExpenseVO.setDate(Calendar.getInstance());
 	}
 	
@@ -116,9 +121,20 @@ public class ExpenseServiceTest {
 		ExpenseVO returnedExpenseVO = expenseService.saveExpense(newExpenseVO);
 		assertNull(returnedExpenseVO);
 	}
-	
+	@Test
+	public void testSaveExpense_FailedToCalculateVat() {
+		EasyMock.expect(mockVatService.calculateTotalVat(EasyMock.isA(BigDecimal.class))).andReturn(null);
+		
+		EasyMock.replay(mockVatService);
+		
+		ExpenseVO returnedExpenseVO = expenseService.saveExpense(newExpenseVO);
+		assertNull(returnedExpenseVO);
+
+		EasyMock.verify(mockVatService);
+	}
 	@Test
 	public void testSaveExpense_ExceptionPerformingSave() {
+		EasyMock.expect(mockVatService.calculateTotalVat(EasyMock.isA(BigDecimal.class))).andReturn(new BigDecimal("2.22"));
 		EasyMock.expect(mockExpenseRepository.save(EasyMock.isA(ExpenseVO.class))).andThrow(mockDataAccessException);
 		EasyMock.expect(mockDataAccessException.getMessage()).andReturn("Exception");
 		EasyMock.expect(mockDataAccessException.getStackTrace()).andReturn(null);
@@ -126,34 +142,44 @@ public class ExpenseServiceTest {
 		
 		EasyMock.replay(mockExpenseRepository);
 		EasyMock.replay(mockDataAccessException);
+		EasyMock.replay(mockVatService);
 		
 		ExpenseVO returnedExpenseVO = expenseService.saveExpense(newExpenseVO);
 		assertNull(returnedExpenseVO);
 		
 		EasyMock.verify(mockExpenseRepository);
 		EasyMock.verify(mockDataAccessException);
+		EasyMock.verify(mockVatService);
 	}
 	@Test
 	public void testSaveExpense_NullReturned() {
 		ExpenseVO dbExpenseVO = null;
+		EasyMock.expect(mockVatService.calculateTotalVat(EasyMock.isA(BigDecimal.class))).andReturn(new BigDecimal("2.22"));
 		EasyMock.expect(mockExpenseRepository.save(EasyMock.isA(ExpenseVO.class))).andReturn(dbExpenseVO);
+		
 		EasyMock.replay(mockExpenseRepository);
+		EasyMock.replay(mockVatService);
 		
 		ExpenseVO returnedExpenseVO = expenseService.saveExpense(newExpenseVO);
 		assertNull(returnedExpenseVO);
 		
 		EasyMock.verify(mockExpenseRepository);
+		EasyMock.verify(mockVatService);
 	}
 	@Test
 	public void testSaveExpense_Success() {
 		ExpenseVO dbExpenseVO = new ExpenseVO();
+		EasyMock.expect(mockVatService.calculateTotalVat(EasyMock.isA(BigDecimal.class))).andReturn(new BigDecimal("2.22"));
 		EasyMock.expect(mockExpenseRepository.save(EasyMock.isA(ExpenseVO.class))).andReturn(dbExpenseVO);
+		
 		EasyMock.replay(mockExpenseRepository);
+		EasyMock.replay(mockVatService);
 		
 		ExpenseVO returnedExpenseVO = expenseService.saveExpense(newExpenseVO);
 		assertNotNull(returnedExpenseVO);
 		
 		EasyMock.verify(mockExpenseRepository);
+		EasyMock.verify(mockVatService);
 	}
 }
 

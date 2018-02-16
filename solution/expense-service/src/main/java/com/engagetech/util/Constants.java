@@ -31,11 +31,18 @@ public class Constants {
 	/** Constant for the int number 2 **/
 	public static final int INT_TWO = 2;
 	
+	/** Constant for the BigDecimal number 1 **/
+	public static final BigDecimal BD_ONE = new BigDecimal(1);
 	/** Constant for the BigDecimal number 100 **/
 	public static final BigDecimal BD_ONE_HUNDRED = new BigDecimal(100);
 	
 	/** Constant for the float number 100 **/
 	public static final float FL_ONE_HUNDRED = 100.00f;
+
+	/** Constant for the currency GBP **/
+	public static final String CURRENCY_GBP = "GBP";
+
+
 
 
 }

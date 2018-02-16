@@ -50,6 +50,9 @@ public class ExpenseRestControllerTest {
 		expenseVO.setTotalValue(new BigDecimal("9.55"));
 		expenseVO.setValueWithoutVat(new BigDecimal("7.64"));
 		expenseVO.setVatPaid(new BigDecimal("1.91"));
+		expenseVO.setOriginalCurrency("EUR");
+		expenseVO.setExchangeRate(new BigDecimal("1.0002"));
+		expenseVO.setOriginalValue(new BigDecimal("9.55"));
 		expenseVO.setDate(Calendar.getInstance());
 		
 	}
@@ -70,7 +73,10 @@ public class ExpenseRestControllerTest {
 		.andExpect(jsonPath("[0].total_value").doesNotExist())
 		.andExpect(jsonPath("[0].value_without_vat").doesNotExist())	
 		.andExpect(jsonPath("[0].vat_paid").doesNotExist())	
-		.andExpect(jsonPath("[0].date").doesNotExist());
+		.andExpect(jsonPath("[0].date").doesNotExist())
+		.andExpect(jsonPath("[0].original_currency").doesNotExist())
+		.andExpect(jsonPath("[0].exchange_rate").doesNotExist())
+		.andExpect(jsonPath("[0].original_value").doesNotExist());
 		
 		EasyMock.verify(mockExpenseService);
 	}
@@ -90,7 +96,10 @@ public class ExpenseRestControllerTest {
 		.andExpect(jsonPath("[0].total_value").doesNotExist())	
 		.andExpect(jsonPath("[0].value_without_vat").doesNotExist())	
 		.andExpect(jsonPath("[0].vat_paid").doesNotExist())	
-		.andExpect(jsonPath("[0].date").doesNotExist());
+		.andExpect(jsonPath("[0].date").doesNotExist())
+		.andExpect(jsonPath("[0].original_currency").doesNotExist())
+		.andExpect(jsonPath("[0].exchange_rate").doesNotExist())
+		.andExpect(jsonPath("[0].original_value").doesNotExist());
 		
 		EasyMock.verify(mockExpenseService);
 	}
@@ -111,7 +120,10 @@ public class ExpenseRestControllerTest {
 		.andExpect(jsonPath("[0].total_value").value(expenseVOList.get(0).getTotalValue()))	
 		.andExpect(jsonPath("[0].value_without_vat").value(expenseVOList.get(0).getValueWithoutVat()))
 		.andExpect(jsonPath("[0].vat_paid").value(expenseVOList.get(0).getVatPaid()))
-		.andExpect(jsonPath("[0].date").exists());
+		.andExpect(jsonPath("[0].date").exists())
+		.andExpect(jsonPath("[0].original_currency").value(expenseVOList.get(0).getOriginalCurrency()))
+		.andExpect(jsonPath("[0].exchange_rate").value(expenseVOList.get(0).getExchangeRate()))
+		.andExpect(jsonPath("[0].original_value").value(expenseVOList.get(0).getOriginalValue()));
 		
 		EasyMock.verify(mockExpenseService);
 	}
@@ -134,12 +146,18 @@ public class ExpenseRestControllerTest {
 		.andExpect(jsonPath("[0].value_without_vat").value(expenseVOList.get(0).getValueWithoutVat()))
 		.andExpect(jsonPath("[0].vat_paid").value(expenseVOList.get(0).getVatPaid()))
 		.andExpect(jsonPath("[0].date").exists())
+		.andExpect(jsonPath("[0].original_currency").value(expenseVOList.get(0).getOriginalCurrency()))
+		.andExpect(jsonPath("[0].exchange_rate").value(expenseVOList.get(0).getExchangeRate()))
+		.andExpect(jsonPath("[0].original_value").value(expenseVOList.get(0).getOriginalValue()))
 		.andExpect(jsonPath("[1].id").value(expenseVOList.get(1).getId()))
 		.andExpect(jsonPath("[1].reason").value(expenseVOList.get(1).getReason()))
 		.andExpect(jsonPath("[1].total_value").value(expenseVOList.get(1).getTotalValue()))
 		.andExpect(jsonPath("[1].value_without_vat").value(expenseVOList.get(1).getValueWithoutVat()))
 		.andExpect(jsonPath("[1].vat_paid").value(expenseVOList.get(1).getVatPaid()))
-		.andExpect(jsonPath("[1].date").exists());
+		.andExpect(jsonPath("[1].date").exists())
+		.andExpect(jsonPath("[1].original_currency").value(expenseVOList.get(1).getOriginalCurrency()))
+		.andExpect(jsonPath("[1].exchange_rate").value(expenseVOList.get(1).getExchangeRate()))
+		.andExpect(jsonPath("[1].original_value").value(expenseVOList.get(1).getOriginalValue()));
 		
 		EasyMock.verify(mockExpenseService);
 	}
@@ -158,7 +176,10 @@ public class ExpenseRestControllerTest {
 		.andExpect(jsonPath("total_value").doesNotExist())
 		.andExpect(jsonPath("value_without_vat").doesNotExist())
 		.andExpect(jsonPath("vat_paid").doesNotExist())
-		.andExpect(jsonPath("date").doesNotExist());
+		.andExpect(jsonPath("date").doesNotExist())
+		.andExpect(jsonPath("currency").doesNotExist())
+		.andExpect(jsonPath("exchange_rate").doesNotExist())
+		.andExpect(jsonPath("original_value").doesNotExist());
 		
 		EasyMock.verify(mockExpenseService);
 	}
@@ -177,7 +198,10 @@ public class ExpenseRestControllerTest {
 		.andExpect(jsonPath("total_value").value(expenseVO.getTotalValue()))
 		.andExpect(jsonPath("value_without_vat").value(expenseVO.getValueWithoutVat()))
 		.andExpect(jsonPath("vat_paid").value(expenseVO.getVatPaid()))
-		.andExpect(jsonPath("date").exists());
+		.andExpect(jsonPath("date").exists())
+		.andExpect(jsonPath("currency").value(expenseVO.getOriginalCurrency()))
+		.andExpect(jsonPath("exchange_rate").value(expenseVO.getExchangeRate()))
+		.andExpect(jsonPath("original_value").value(expenseVO.getOriginalValue()));
 		
 		EasyMock.verify(mockExpenseService);
 	}

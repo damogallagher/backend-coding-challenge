@@ -18,7 +18,16 @@
             </column>
             <column name="vat_paid" type="DECIMAL(6, 2)">
                 <constraints nullable="false"/>
-            </column>                        
+            </column>    
+            <column name="original_currency" type="varchar(10)">
+                <constraints nullable="true"/>
+            </column>   
+         	<column name="exchange_rate" type="DECIMAL(6, 2)">
+                <constraints nullable="true"/>
+            </column>
+        	<column name="original_value" type="DECIMAL(6, 2)">
+                <constraints nullable="true"/>
+            </column>                                                        
             <column name="reason" type="varchar(500)">
                 <constraints nullable="false"/>
             </column>  

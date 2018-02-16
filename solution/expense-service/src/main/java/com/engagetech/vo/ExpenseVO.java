@@ -56,6 +56,18 @@ public class ExpenseVO {
 	@JsonProperty("vat_paid")
 	private BigDecimal vatPaid;
 	
+	@Column(name = "original_currency", nullable = true, length=10)
+	@JsonProperty("original_currency")
+	private String originalCurrency;
+	
+	@Column(name = "exchange_rate", nullable = true)
+	@JsonProperty("exchange_rate")
+	private BigDecimal exchangeRate;
+	
+	@Column(name = "original_value", nullable = true)
+	@JsonProperty("original_value")
+	private BigDecimal originalValue;
+	
 	@NotNull(message="Reason cannot be null")
 	@Pattern(regexp = Constants.TEXT_REGEX, message="Reason value of '${validatedValue}' contains invalid charachters")
 	@Column(name = "reason", nullable = false, length = 500)
@@ -71,6 +83,14 @@ public class ExpenseVO {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public String getOriginalCurrency() {
+		return originalCurrency;
+	}
+
+	public void setOriginalCurrency(String originalCurrency) {
+		this.originalCurrency = originalCurrency;
 	}
 
 	public void setId(Integer id) {
@@ -117,10 +137,27 @@ public class ExpenseVO {
 		this.vatPaid = vatPaid;
 	}
 
+	public BigDecimal getExchangeRate() {
+		return exchangeRate;
+	}
+
+	public void setExchangeRate(BigDecimal exchangeRate) {
+		this.exchangeRate = exchangeRate;
+	}
+
+	public BigDecimal getOriginalValue() {
+		return originalValue;
+	}
+
+	public void setOriginalValue(BigDecimal originalValue) {
+		this.originalValue = originalValue;
+	}
+
 	@Override
 	public String toString() {
-		return "ExpenseVO [id=" + id + ", totalValue=" + totalValue + ", valueWithoutVat=" + valueWithoutVat + ", vatPaid="
-				+ vatPaid + ", reason=" + reason + ", date=" + date + "]";
+		return "ExpenseVO [id=" + id + ", totalValue=" + totalValue + ", valueWithoutVat=" + valueWithoutVat
+				+ ", vatPaid=" + vatPaid + ", originalCurrency=" + originalCurrency + ", exchangeRate=" + exchangeRate
+				+ ", originalValue=" + originalValue + ", reason=" + reason + ", date=" + date + "]";
 	}
 
 	
