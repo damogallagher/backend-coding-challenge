@@ -9,7 +9,11 @@
 		<ul>
 			<li>
 				<label>Date</label>
-				<input type="text" ng-required="true" ng-model="newExpense.date" ui-date="dateOptions" placeholder="dd/mm/yyyy" />
+				<input type="text" ng-required="true" ng-model="newExpense.date" ui-date="dateOptions" placeholder="dd/mm/yyyy" ng-change="getTotalVat()"/>
+			</li>
+			<li ng-if="totalVat > 0.0">
+				<label>Total Vat</label>
+				{{totalVat}}
 			</li>
 			<li>
 				<label>Amount</label>

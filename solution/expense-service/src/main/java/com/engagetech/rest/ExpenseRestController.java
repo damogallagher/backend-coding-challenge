@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiResponses;
  *
  */
 @RestController
-@RequestMapping(value="/")
+@RequestMapping(value="/expenses")
 public class ExpenseRestController {
 
 	/** Private logger variable **/

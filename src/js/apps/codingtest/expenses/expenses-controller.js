@@ -20,7 +20,8 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 	var servicesApiKey = $config.servicesApiKey;
   var apiKeyHeader = {"x-api-key" : servicesApiKey}
 
-	var restExpenses = $restalchemy.init({ root: $config.serviceApiRoot, headers: apiKeyHeader }).at("expenses");
+	var restExpenses = $restalchemy.init({ root: $config.expensesServiceApiRoot, headers: apiKeyHeader }).at("expenses");
+	var restVat = $restalchemy.init({ root: $config.vatServiceApiRoot, headers: apiKeyHeader }).at("vat");
 
 	$scope.dateOptions = {
 		changeMonth: true,
@@ -29,7 +30,6 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 	};
 
 	var loadExpenses = function() {
-
 		// Retrieve a list of expenses via REST
 		restExpenses.get().then(function(expenses) {
 			$scope.expenses = expenses;
@@ -50,16 +50,26 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 			var formattedDate = formatDate($scope.newExpense.date);
 			$scope.newExpense.date = formattedDate;
 			// Post the expense via REST
-			restExpenses.post($scope.newExpense).then(function(data) {
-				// Reload new expenses list
-				loadExpenses();
+			restExpenses.post($scope.newExpense.total_value).then(function(data) {
+					// Reload new expenses list
+					loadExpenses();
 					$scope.clearExpense();
 			});
 		}
 	};
 
+  //Method to get the vat total
+  $scope.getTotalVat = function() {
+		console.log("in getVatRate");
+		restVat.post().then(function(vatData) {
+			console.log(" vatData:"+vatData);
+			$scope.totalVat = vatData;
+		});
+	}
+
 	$scope.clearExpense = function() {
 		$scope.newExpense = {};
+		$scope.totalVat = 0.0;
 	};
 
 	// Initialise scope variables

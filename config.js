@@ -15,8 +15,11 @@ module.exports = {
 	//application api key - in a real world system - we could get this in response to a user login
 	servicesApiKey: "h3Nm6XackN2bJDSxZ3AFptKjil69cgPO",
 
-	// The root directory for all api calls
-	serviceApiRoot: "http://localhost:8090/",
+	// The root directory for all expenses api calls
+	expensesServiceApiRoot: "http://localhost:8090/expenses",
+
+	// The root directory for all vat api calls
+	vatServiceApiRoot: "http://localhost:8090/vat",
 
 	// Root directory for static content
 	staticRoot: "/"
