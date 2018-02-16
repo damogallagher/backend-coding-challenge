@@ -24,7 +24,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Sort;
 
 import com.engagetech.repository.ExpenseRepository;
+import com.engagetech.rest.vo.ExchangeRateVO;
 import com.engagetech.service.impl.ExpenseServiceImpl;
+import com.engagetech.util.Constants;
 import com.engagetech.vo.ExpenseVO;
 
 @RunWith(EasyMockRunner.class)
@@ -37,11 +39,12 @@ public class ExpenseServiceTest {
 	private ExpenseRepository mockExpenseRepository;
 	@Mock
 	private IVatService mockVatService;
-	
+	@Mock
+	private IExchangeRateService mockExchangeRateService;
 	@Mock
 	private DataAccessException mockDataAccessException;
 	private ExpenseVO newExpenseVO;
-	
+	private ExchangeRateVO exchangeRateVO;
 	@Before
 	public void setUp() {
 		newExpenseVO = new ExpenseVO();
@@ -55,6 +58,11 @@ public class ExpenseServiceTest {
 		newExpenseVO.setExchangeRate(new BigDecimal("0.55"));
 		newExpenseVO.setOriginalValue(new BigDecimal("9.55"));
 		newExpenseVO.setDate(Calendar.getInstance());
+		
+		exchangeRateVO = new ExchangeRateVO();
+		exchangeRateVO.setConversionRate(new BigDecimal("0.55"));
+		exchangeRateVO.setConvertedValue(new BigDecimal("55.55"));
+		exchangeRateVO.setOriginalValue(new BigDecimal("66.55"));
 	}
 	
 	@Test
@@ -180,6 +188,89 @@ public class ExpenseServiceTest {
 		
 		EasyMock.verify(mockExpenseRepository);
 		EasyMock.verify(mockVatService);
+	}
+	@Test
+	public void testSaveExpense_SuccessCurrencyIsGBP() {
+		newExpenseVO.setOriginalCurrency(Constants.CURRENCY_GBP);
+		ExpenseVO dbExpenseVO = new ExpenseVO();
+		EasyMock.expect(mockVatService.calculateTotalVat(EasyMock.isA(BigDecimal.class))).andReturn(new BigDecimal("2.22"));
+		EasyMock.expect(mockExpenseRepository.save(EasyMock.isA(ExpenseVO.class))).andReturn(dbExpenseVO);
+		
+		EasyMock.replay(mockExpenseRepository);
+		EasyMock.replay(mockVatService);
+		
+		ExpenseVO returnedExpenseVO = expenseService.saveExpense(newExpenseVO);
+		assertNotNull(returnedExpenseVO);
+		
+		EasyMock.verify(mockExpenseRepository);
+		EasyMock.verify(mockVatService);
+	}
+	@Test
+	public void testSaveExpense_SuccessCurrencyIsNull() {
+		newExpenseVO.setOriginalCurrency(null);
+		ExpenseVO dbExpenseVO = new ExpenseVO();
+		EasyMock.expect(mockVatService.calculateTotalVat(EasyMock.isA(BigDecimal.class))).andReturn(new BigDecimal("2.22"));
+		EasyMock.expect(mockExpenseRepository.save(EasyMock.isA(ExpenseVO.class))).andReturn(dbExpenseVO);
+		
+		EasyMock.replay(mockExpenseRepository);
+		EasyMock.replay(mockVatService);
+		
+		ExpenseVO returnedExpenseVO = expenseService.saveExpense(newExpenseVO);
+		assertNotNull(returnedExpenseVO);
+		
+		EasyMock.verify(mockExpenseRepository);
+		EasyMock.verify(mockVatService);
+	}
+	@Test
+	public void testSaveExpense_SuccessCurrencyIsEmpty() {
+		newExpenseVO.setOriginalCurrency("");
+		ExpenseVO dbExpenseVO = new ExpenseVO();
+		EasyMock.expect(mockVatService.calculateTotalVat(EasyMock.isA(BigDecimal.class))).andReturn(new BigDecimal("2.22"));
+		EasyMock.expect(mockExpenseRepository.save(EasyMock.isA(ExpenseVO.class))).andReturn(dbExpenseVO);
+		
+		EasyMock.replay(mockExpenseRepository);
+		EasyMock.replay(mockVatService);
+		
+		ExpenseVO returnedExpenseVO = expenseService.saveExpense(newExpenseVO);
+		assertNotNull(returnedExpenseVO);
+		
+		EasyMock.verify(mockExpenseRepository);
+		EasyMock.verify(mockVatService);
+	}
+	@Test
+	public void testSaveExpense_SuccessCurrencyIsNotGBP() {
+		newExpenseVO.setOriginalCurrency("EUR");
+		ExpenseVO dbExpenseVO = new ExpenseVO();		
+
+		EasyMock.expect(mockExchangeRateService.performGBPConversion(EasyMock.anyString(), EasyMock.isA(BigDecimal.class))).andReturn(exchangeRateVO);
+		EasyMock.expect(mockVatService.calculateTotalVat(EasyMock.isA(BigDecimal.class))).andReturn(new BigDecimal("2.22"));
+		EasyMock.expect(mockExpenseRepository.save(EasyMock.isA(ExpenseVO.class))).andReturn(dbExpenseVO);
+		
+		EasyMock.replay(mockExpenseRepository);
+		EasyMock.replay(mockVatService);
+		EasyMock.replay(mockExchangeRateService);
+		
+		ExpenseVO returnedExpenseVO = expenseService.saveExpense(newExpenseVO);
+		assertNotNull(returnedExpenseVO);
+		
+		EasyMock.verify(mockExpenseRepository);
+		EasyMock.verify(mockVatService);
+		EasyMock.verify(mockExchangeRateService);
+	}
+	
+	@Test
+	public void testSaveExpense_FailedToPerformConversion() {
+		newExpenseVO.setOriginalCurrency("EUR");	
+		exchangeRateVO = null;
+		
+		EasyMock.expect(mockExchangeRateService.performGBPConversion(EasyMock.anyString(), EasyMock.isA(BigDecimal.class))).andReturn(exchangeRateVO);
+
+		EasyMock.replay(mockExpenseRepository);
+
+		ExpenseVO returnedExpenseVO = expenseService.saveExpense(newExpenseVO);
+		assertNull(returnedExpenseVO);
+		
+		EasyMock.verify(mockExpenseRepository);
 	}
 }
 

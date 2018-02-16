@@ -177,7 +177,7 @@ public class ExpenseRestControllerTest {
 		.andExpect(jsonPath("value_without_vat").doesNotExist())
 		.andExpect(jsonPath("vat_paid").doesNotExist())
 		.andExpect(jsonPath("date").doesNotExist())
-		.andExpect(jsonPath("currency").doesNotExist())
+		.andExpect(jsonPath("original_currency").doesNotExist())
 		.andExpect(jsonPath("exchange_rate").doesNotExist())
 		.andExpect(jsonPath("original_value").doesNotExist());
 		
@@ -199,7 +199,7 @@ public class ExpenseRestControllerTest {
 		.andExpect(jsonPath("value_without_vat").value(expenseVO.getValueWithoutVat()))
 		.andExpect(jsonPath("vat_paid").value(expenseVO.getVatPaid()))
 		.andExpect(jsonPath("date").exists())
-		.andExpect(jsonPath("currency").value(expenseVO.getOriginalCurrency()))
+		.andExpect(jsonPath("original_currency").value(expenseVO.getOriginalCurrency()))
 		.andExpect(jsonPath("exchange_rate").value(expenseVO.getExchangeRate()))
 		.andExpect(jsonPath("original_value").value(expenseVO.getOriginalValue()));
 		

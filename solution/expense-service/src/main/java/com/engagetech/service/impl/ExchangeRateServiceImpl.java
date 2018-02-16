@@ -63,6 +63,10 @@ public class ExchangeRateServiceImpl implements IExchangeRateService {
 		
 		FixerDataVO fixerDataVO = restTemplate.getForObject(url, FixerDataVO.class);
 		LOGGER.debug("fixerDataVO: {}", fixerDataVO);
+		if (fixerDataVO == null) {
+			LOGGER.error("Failed to get data for the base currency {}", currency);
+			return exchangeRateVO;
+		}
 		
 		BigDecimal conversionRate = null;
 		for (Map.Entry<String, BigDecimal> entry : fixerDataVO.getRates().entrySet()) {
@@ -71,6 +75,11 @@ public class ExchangeRateServiceImpl implements IExchangeRateService {
 				conversionRate = entry.getValue();
 			}
 		}
+		if (conversionRate == null) {
+			LOGGER.error("Failed to get exchange rate for the currency {}", Constants.CURRENCY_GBP);
+			return exchangeRateVO;
+		}
+		
 		LOGGER.debug("conversionRate: {}", conversionRate);
 		
 		BigDecimal convertedValue = originalValue.multiply(conversionRate);
