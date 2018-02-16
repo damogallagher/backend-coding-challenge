@@ -8,6 +8,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import org.easymock.EasyMock;
 import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.dao.DataAccessException;
@@ -33,6 +36,19 @@ public class ExpenseServiceTest {
 	private ExpenseRepository mockExpenseRepository;
 	@Mock
 	private DataAccessException mockDataAccessException;
+	private ExpenseVO newExpenseVO;
+	
+	@Before
+	public void setUp() {
+		newExpenseVO = new ExpenseVO();
+		newExpenseVO = new ExpenseVO();
+		newExpenseVO.setId(1);
+		newExpenseVO.setReason("reason");
+		newExpenseVO.setTotalValue(new BigDecimal("9.55"));
+		newExpenseVO.setValueWithoutVat(new BigDecimal("7.64"));
+		newExpenseVO.setVatPaid(new BigDecimal("1.91"));
+		newExpenseVO.setDate(Calendar.getInstance());
+	}
 	
 	@Test
 	public void testGetExpenses_NullExpensesReturned() {
@@ -64,7 +80,7 @@ public class ExpenseServiceTest {
 	@Test
 	public void testGetExpenses_1ExpenseReturned() {
 		List<ExpenseVO> dbExpenseList = new LinkedList<>();
-		dbExpenseList.add(new ExpenseVO());
+		dbExpenseList.add(newExpenseVO);
 		
 		EasyMock.expect(mockExpenseRepository.findAll()).andReturn(dbExpenseList);
 		EasyMock.replay(mockExpenseRepository);
@@ -79,8 +95,8 @@ public class ExpenseServiceTest {
 	@Test
 	public void testGetExpenses_2ExpensesReturned() {
 		List<ExpenseVO> dbExpenseList = new LinkedList<>();
-		dbExpenseList.add(new ExpenseVO());
-		dbExpenseList.add(new ExpenseVO());
+		dbExpenseList.add(newExpenseVO);
+		dbExpenseList.add(newExpenseVO);
 		
 		EasyMock.expect(mockExpenseRepository.findAll()).andReturn(dbExpenseList);
 		EasyMock.replay(mockExpenseRepository);
@@ -101,7 +117,6 @@ public class ExpenseServiceTest {
 	
 	@Test
 	public void testSaveExpense_ExceptionPerformingSave() {
-		ExpenseVO newExpenseVO = new ExpenseVO();
 		EasyMock.expect(mockExpenseRepository.save(EasyMock.isA(ExpenseVO.class))).andThrow(mockDataAccessException);
 		EasyMock.expect(mockDataAccessException.getMessage()).andReturn("Exception");
 		EasyMock.expect(mockDataAccessException.getStackTrace()).andReturn(null);
@@ -118,7 +133,6 @@ public class ExpenseServiceTest {
 	}
 	@Test
 	public void testSaveExpense_NullReturned() {
-		ExpenseVO newExpenseVO = new ExpenseVO();
 		ExpenseVO dbExpenseVO = null;
 		EasyMock.expect(mockExpenseRepository.save(EasyMock.isA(ExpenseVO.class))).andReturn(dbExpenseVO);
 		EasyMock.replay(mockExpenseRepository);
@@ -130,7 +144,6 @@ public class ExpenseServiceTest {
 	}
 	@Test
 	public void testSaveExpense_Success() {
-		ExpenseVO newExpenseVO = new ExpenseVO();
 		ExpenseVO dbExpenseVO = new ExpenseVO();
 		EasyMock.expect(mockExpenseRepository.save(EasyMock.isA(ExpenseVO.class))).andReturn(dbExpenseVO);
 		EasyMock.replay(mockExpenseRepository);

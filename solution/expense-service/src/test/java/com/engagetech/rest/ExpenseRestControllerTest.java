@@ -47,7 +47,9 @@ public class ExpenseRestControllerTest {
 		expenseVO = new ExpenseVO();
 		expenseVO.setId(1);
 		expenseVO.setReason("reason");
-		expenseVO.setValue(new BigDecimal("00.55"));
+		expenseVO.setTotalValue(new BigDecimal("9.55"));
+		expenseVO.setValueWithoutVat(new BigDecimal("7.64"));
+		expenseVO.setVatPaid(new BigDecimal("1.91"));
 		expenseVO.setDate(Calendar.getInstance());
 		
 	}
@@ -65,7 +67,9 @@ public class ExpenseRestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("[0].id").doesNotExist())
 		.andExpect(jsonPath("[0].reason").doesNotExist())
-		.andExpect(jsonPath("[0].value").doesNotExist())		
+		.andExpect(jsonPath("[0].total_value").doesNotExist())
+		.andExpect(jsonPath("[0].value_without_vat").doesNotExist())	
+		.andExpect(jsonPath("[0].vat_paid").doesNotExist())	
 		.andExpect(jsonPath("[0].date").doesNotExist());
 		
 		EasyMock.verify(mockExpenseService);
@@ -83,7 +87,9 @@ public class ExpenseRestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("[0].id").doesNotExist())
 		.andExpect(jsonPath("[0].reason").doesNotExist())
-		.andExpect(jsonPath("[0].value").doesNotExist())		
+		.andExpect(jsonPath("[0].total_value").doesNotExist())	
+		.andExpect(jsonPath("[0].value_without_vat").doesNotExist())	
+		.andExpect(jsonPath("[0].vat_paid").doesNotExist())	
 		.andExpect(jsonPath("[0].date").doesNotExist());
 		
 		EasyMock.verify(mockExpenseService);
@@ -102,7 +108,9 @@ public class ExpenseRestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("[0].id").value(expenseVOList.get(0).getId()))
 		.andExpect(jsonPath("[0].reason").value(expenseVOList.get(0).getReason()))
-		.andExpect(jsonPath("[0].value").value(expenseVOList.get(0).getValue()))		
+		.andExpect(jsonPath("[0].total_value").value(expenseVOList.get(0).getTotalValue()))	
+		.andExpect(jsonPath("[0].value_without_vat").value(expenseVOList.get(0).getValueWithoutVat()))
+		.andExpect(jsonPath("[0].vat_paid").value(expenseVOList.get(0).getVatPaid()))
 		.andExpect(jsonPath("[0].date").exists());
 		
 		EasyMock.verify(mockExpenseService);
@@ -122,11 +130,15 @@ public class ExpenseRestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("[0].id").value(expenseVOList.get(0).getId()))
 		.andExpect(jsonPath("[0].reason").value(expenseVOList.get(0).getReason()))
-		.andExpect(jsonPath("[0].value").value(expenseVOList.get(0).getValue()))		
+		.andExpect(jsonPath("[0].total_value").value(expenseVOList.get(0).getTotalValue()))	
+		.andExpect(jsonPath("[0].value_without_vat").value(expenseVOList.get(0).getValueWithoutVat()))
+		.andExpect(jsonPath("[0].vat_paid").value(expenseVOList.get(0).getVatPaid()))
 		.andExpect(jsonPath("[0].date").exists())
 		.andExpect(jsonPath("[1].id").value(expenseVOList.get(1).getId()))
 		.andExpect(jsonPath("[1].reason").value(expenseVOList.get(1).getReason()))
-		.andExpect(jsonPath("[1].value").value(expenseVOList.get(1).getValue()))		
+		.andExpect(jsonPath("[1].total_value").value(expenseVOList.get(1).getTotalValue()))
+		.andExpect(jsonPath("[1].value_without_vat").value(expenseVOList.get(1).getValueWithoutVat()))
+		.andExpect(jsonPath("[1].vat_paid").value(expenseVOList.get(1).getVatPaid()))
 		.andExpect(jsonPath("[1].date").exists());
 		
 		EasyMock.verify(mockExpenseService);
@@ -143,7 +155,9 @@ public class ExpenseRestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("id").doesNotExist())
 		.andExpect(jsonPath("reason").doesNotExist())
-		.andExpect(jsonPath("value").doesNotExist())
+		.andExpect(jsonPath("total_value").doesNotExist())
+		.andExpect(jsonPath("value_without_vat").doesNotExist())
+		.andExpect(jsonPath("vat_paid").doesNotExist())
 		.andExpect(jsonPath("date").doesNotExist());
 		
 		EasyMock.verify(mockExpenseService);
@@ -160,7 +174,9 @@ public class ExpenseRestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("id").value(expenseVO.getId()))
 		.andExpect(jsonPath("reason").value(expenseVO.getReason()))
-		.andExpect(jsonPath("value").value(expenseVO.getValue()))
+		.andExpect(jsonPath("total_value").value(expenseVO.getTotalValue()))
+		.andExpect(jsonPath("value_without_vat").value(expenseVO.getValueWithoutVat()))
+		.andExpect(jsonPath("vat_paid").value(expenseVO.getVatPaid()))
 		.andExpect(jsonPath("date").exists());
 		
 		EasyMock.verify(mockExpenseService);

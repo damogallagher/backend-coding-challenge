@@ -20,6 +20,8 @@ import javax.validation.constraints.Pattern;
 import com.engagetech.util.Constants;
 import com.engagetech.util.JsonCalendarDeserializer;
 import com.engagetech.util.JsonCalendarSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -30,28 +32,41 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  *
  */
 @Entity(name = "T_EXPENSE")
+@JsonIgnoreProperties(ignoreUnknown=false)
 public class ExpenseVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
+	@JsonProperty("id")
 	private Integer id;
 	
-	@NotNull(message="Value cannot be null")
-	@DecimalMin(value = "00.00", message="Value must be greater than {value}")
-	@Digits(integer=6, fraction=2, message="Value must be in the format 00.00")
-	@Column(name = "value", nullable = false)
-	private BigDecimal value;
+	@NotNull(message="Total Value cannot be null")
+	@DecimalMin(value = "00.00", message="Total Value must be greater than {value}")
+	@Digits(integer=6, fraction=2, message="Total Value must be in the format 00.00")
+	@Column(name = "total_value", nullable = false)
+	@JsonProperty("total_value")
+	private BigDecimal totalValue;
+	
+	@Column(name = "value_without_vat", nullable = false)
+	@JsonProperty("value_without_vat")
+	private BigDecimal valueWithoutVat;
+	
+	@Column(name = "vat_paid", nullable = false)
+	@JsonProperty("vat_paid")
+	private BigDecimal vatPaid;
 	
 	@NotNull(message="Reason cannot be null")
 	@Pattern(regexp = Constants.TEXT_REGEX, message="Reason value of '${validatedValue}' contains invalid charachters")
 	@Column(name = "reason", nullable = false, length = 500)
+	@JsonProperty("reason")
 	private String reason;
 	
 	@JsonSerialize(using = JsonCalendarSerializer.class)
 	@JsonDeserialize(using = JsonCalendarDeserializer.class)
 	@NotNull(message="Date cannot be null")
 	@Column(name = "date", nullable = false)
+	@JsonProperty("date")
 	private Calendar date;
 
 	public Integer getId() {
@@ -62,12 +77,12 @@ public class ExpenseVO {
 		this.id = id;
 	}
 
-	public BigDecimal getValue() {
-		return value;
+	public BigDecimal getTotalValue() {
+		return totalValue;
 	}
 
-	public void setValue(BigDecimal value) {
-		this.value = value;
+	public void setTotalValue(BigDecimal totalValue) {
+		this.totalValue = totalValue;
 	}
 
 	public String getReason() {
@@ -86,9 +101,26 @@ public class ExpenseVO {
 		this.date = date;
 	}
 
+	public BigDecimal getValueWithoutVat() {
+		return valueWithoutVat;
+	}
+
+	public void setValueWithoutVat(BigDecimal valueWithoutVat) {
+		this.valueWithoutVat = valueWithoutVat;
+	}
+
+	public BigDecimal getVatPaid() {
+		return vatPaid;
+	}
+
+	public void setVatPaid(BigDecimal vatPaid) {
+		this.vatPaid = vatPaid;
+	}
+
 	@Override
 	public String toString() {
-		return "ExpenseVO [id=" + id + ", reason=" + reason + ", date=" + date + "]";
+		return "ExpenseVO [id=" + id + ", totalValue=" + totalValue + ", valueWithoutVat=" + valueWithoutVat + ", vatPaid="
+				+ vatPaid + ", reason=" + reason + ", date=" + date + "]";
 	}
 
 	

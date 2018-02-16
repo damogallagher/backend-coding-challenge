@@ -10,9 +10,15 @@
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="value" type="DECIMAL(6, 2)">
+            <column name="total_value" type="DECIMAL(6, 2)">
                 <constraints nullable="false"/>
             </column>
+            <column name="value_without_vat" type="DECIMAL(6, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vat_paid" type="DECIMAL(6, 2)">
+                <constraints nullable="false"/>
+            </column>                        
             <column name="reason" type="varchar(500)">
                 <constraints nullable="false"/>
             </column>  

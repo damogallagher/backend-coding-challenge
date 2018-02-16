@@ -2,7 +2,7 @@
  * Copyright (c) 2018, Damien Gallagher. All rights reserved.
  */
 package com.engagetech.repository;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
@@ -14,7 +14,7 @@ import com.engagetech.vo.ExpenseVO;
  *
  */
 @RepositoryRestResource(collectionResourceRel = "expenseResource", path = "expenseResource")
-public interface ExpenseRepository extends CrudRepository<ExpenseVO, Long> {
+public interface ExpenseRepository extends PagingAndSortingRepository<ExpenseVO, Long> {
 
 	/**
 	 * Method to find an auth object by reason

@@ -44,7 +44,7 @@ public class ExpenseRestController {
 	 */
 	@ApiOperation(notes = "Get All Expenses", value = "Get All Expenses", nickname = "getAllExpenses")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Expenses retrieved", response = ExpenseVO.class) })
-	@GetMapping(value = "/")
+	@GetMapping(value = {"", "/"})
 	public List<ExpenseVO> getAllExpenses() {
 		LOGGER.debug("Entered getAllExpenses");
 		List<ExpenseVO> expenseList = expenseService.getAllExpenses();
@@ -59,7 +59,7 @@ public class ExpenseRestController {
 	 */
 	@ApiOperation(notes = "Save An Expense", value = "Save An Expense", nickname = "saveExpense")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Save Expense", response = ExpenseVO.class) })
-	@PostMapping(value = "/")
+	@PostMapping(value = {"", "/"})
 	public ExpenseVO saveExpense(@Valid @RequestBody ExpenseVO expenseVO) {
 		LOGGER.debug("Entered saveExpense");
 		ExpenseVO savedExpense = expenseService.saveExpense(expenseVO);
