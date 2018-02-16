@@ -4,6 +4,7 @@ var app = angular.module("alchemytec.config", []);
 var gulpEnvConfig = { /*{{gulp-env-config}}*/ };
 
 app.constant("config", {
-	apiroot: gulpEnvConfig.apiroot,
+	serviceApiRoot: gulpEnvConfig.serviceApiRoot,
+	servicesApiKey: gulpEnvConfig.servicesApiKey,
 	staticRoot: gulpEnvConfig.staticRoot
 });

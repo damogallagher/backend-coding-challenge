@@ -1,0 +1,21 @@
+{
+  "name": "Engage-Tech-Back-end-Coding-Test",
+  "description": "Back-end Coding Test for Engage Tech applicants",
+  "main": "",
+  "authors": [
+    "test test@test.com"
+  ],
+  "license": "Commercial",
+  "homepage": "https://github.com/damogallagher/backend-coding-challenge",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ui-date": "^1.0.1"
+  }
+}

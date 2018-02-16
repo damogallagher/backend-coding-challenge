@@ -16,7 +16,11 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 	// Update the tab sections
 	$rootScope.selectTabSection("expenses", 0);
 
-	var restExpenses = $restalchemy.init({ root: $config.apiroot }).at("expenses");
+	//Set up an object to store the header information for authentication
+	var servicesApiKey = $config.servicesApiKey;
+  var apiKeyHeader = {"x-api-key" : servicesApiKey}
+
+	var restExpenses = $restalchemy.init({ root: $config.serviceApiRoot, headers: apiKeyHeader }).at("expenses");
 
 	$scope.dateOptions = {
 		changeMonth: true,
@@ -25,6 +29,7 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 	};
 
 	var loadExpenses = function() {
+
 		// Retrieve a list of expenses via REST
 		restExpenses.get().then(function(expenses) {
 			$scope.expenses = expenses;
@@ -34,9 +39,10 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 	$scope.saveExpense = function() {
 		if ($scope.expensesform.$valid) {
 			// Post the expense via REST
-			restExpenses.post($scope.newExpense).then(function() {
+			restExpenses.post($scope.newExpense).then(function(data) {
 				// Reload new expenses list
 				loadExpenses();
+					$scope.clearExpense();
 			});
 		}
 	};

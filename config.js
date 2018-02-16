@@ -12,8 +12,11 @@ module.exports = {
 	// Font service url
 	fonts: "//fast.fonts.net/jsapi/8f4aef36-1a46-44be-a573-99686bfcc33b.js",
 
+	//application api key - in a real world system - we could get this in response to a user login
+	servicesApiKey: "h3Nm6XackN2bJDSxZ3AFptKjil69cgPO",
+
 	// The root directory for all api calls
-	apiroot: "/app",
+	serviceApiRoot: "http://localhost:8090/",
 
 	// Root directory for static content
 	staticRoot: "/"

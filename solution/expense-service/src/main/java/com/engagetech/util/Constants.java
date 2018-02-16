@@ -23,7 +23,7 @@ public class Constants {
 	public static final String API_KEY_HEADER = "x-api-key";
 	
 	/** Date format to use in the application **/
-	public static final String DATE_FORMAT_STR = "MM/dd/yyyy";
+	public static final String DATE_FORMAT_STR = "dd/MM/yyyy";
 
 	/** Regex pattern for text submitted through forms **/
 	public static final String TEXT_REGEX = "[a-zA-Z0-9 ,-}{]+";

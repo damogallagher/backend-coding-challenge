@@ -61,12 +61,18 @@ public class GatewayRequestFilter extends ZuulFilter {
 	 */
 	@Override
 	public Object run() {
-		LOGGER.debug("Entered run method");
+		LOGGER.info("Entered run method");
 		RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest httpServletRequest = ctx.getRequest();
 
-		LOGGER.info(String.format("%s request to %s", httpServletRequest.getMethod(), httpServletRequest.getRequestURL().toString()));
+		//Dont perform any checks on option requests
+		if (httpServletRequest.getMethod().equalsIgnoreCase(Constants.OPTIONS)) {
+			LOGGER.info("Options requests are allowed through");
+			return null;
+		}
 		
+		LOGGER.info(String.format("%s request to %s", httpServletRequest.getMethod(), httpServletRequest.getRequestURL().toString()));
+
 		String apiKey = httpServletRequest.getHeader(Constants.API_KEY_HEADER);
 		LOGGER.debug("apiKey:"+apiKey);
 		

@@ -19,5 +19,7 @@ public class Constants {
 	
 	/** Constant for the apiKey header **/
 	public static final String API_KEY_HEADER = "x-api-key";
+	/** Constants for the options string **/
+	public static final String OPTIONS = "OPTIONS";
 	
 }

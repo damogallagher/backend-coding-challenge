@@ -62,7 +62,7 @@ public class ExpenseRestControllerTest {
 		
 		EasyMock.replay(mockExpenseService);
 		
-		mockMvc.perform(MockMvcRequestBuilders.get("/")
+		mockMvc.perform(MockMvcRequestBuilders.get("/expenses")
 		.contentType(MediaType.APPLICATION_JSON_VALUE))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("[0].id").doesNotExist())
@@ -82,7 +82,7 @@ public class ExpenseRestControllerTest {
 		
 		EasyMock.replay(mockExpenseService);
 		
-		mockMvc.perform(MockMvcRequestBuilders.get("/")
+		mockMvc.perform(MockMvcRequestBuilders.get("/expenses")
 		.contentType(MediaType.APPLICATION_JSON_VALUE))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("[0].id").doesNotExist())
@@ -103,7 +103,7 @@ public class ExpenseRestControllerTest {
 		
 		EasyMock.replay(mockExpenseService);
 		
-		mockMvc.perform(MockMvcRequestBuilders.get("/")
+		mockMvc.perform(MockMvcRequestBuilders.get("/expenses")
 		.contentType(MediaType.APPLICATION_JSON_VALUE))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("[0].id").value(expenseVOList.get(0).getId()))
@@ -125,7 +125,7 @@ public class ExpenseRestControllerTest {
 		
 		EasyMock.replay(mockExpenseService);
 		
-		mockMvc.perform(MockMvcRequestBuilders.get("/")
+		mockMvc.perform(MockMvcRequestBuilders.get("/expenses")
 		.contentType(MediaType.APPLICATION_JSON_VALUE))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("[0].id").value(expenseVOList.get(0).getId()))
@@ -149,7 +149,7 @@ public class ExpenseRestControllerTest {
 		
 		EasyMock.replay(mockExpenseService);
 		
-		mockMvc.perform(MockMvcRequestBuilders.post("/")
+		mockMvc.perform(MockMvcRequestBuilders.post("/expenses")
 		.contentType(MediaType.APPLICATION_JSON_VALUE)
 		.content(JsonUtils.convertObjectToJson(expenseVO)))
 		.andExpect(status().isOk())
@@ -168,7 +168,7 @@ public class ExpenseRestControllerTest {
 		
 		EasyMock.replay(mockExpenseService);
 		
-		mockMvc.perform(MockMvcRequestBuilders.post("/")
+		mockMvc.perform(MockMvcRequestBuilders.post("/expenses")
 		.contentType(MediaType.APPLICATION_JSON_VALUE)
 		.content(JsonUtils.convertObjectToJson(expenseVO)))
 		.andExpect(status().isOk())
