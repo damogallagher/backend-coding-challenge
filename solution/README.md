@@ -2,12 +2,12 @@ README
 ====
 How to run the your solution...
 
-#Insatll components
-#Install gulp and all dependencies
+# Install components
+# Install gulp and all dependencies
 npm install -g gulp
 npm install
 
-#Insatll bower and dependencies
+#Install bower and dependencies - jquery date ui
 npm install -g bower
 bower install
 
