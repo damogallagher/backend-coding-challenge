@@ -11,7 +11,7 @@ This project uses Zuul in the gateway service to filter request to the correct m
  
 This gateway can be expanded in the future by adding more microservices as well as adding additional operations to be performed on the request and response messages.
 
-How to run the your solution...
+# How to run the your solution...
 
 # Install components
 ### Install gulp and all dependencies
