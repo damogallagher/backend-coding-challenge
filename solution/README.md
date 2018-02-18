@@ -14,17 +14,17 @@ This gateway can be expanded in the future by adding more microservices as well 
 # How to run the your solution...
 
 # Install components
-### Install gulp and all dependencies
+### Install gulp and all dependencies (from the parent project directory)
 npm install -g gulp
 
 npm install
 
-### Install bower and dependencies - jquery date ui
+### Install bower and dependencies - jquery date ui (from the parent project directory)
 npm install -g bower
 
 bower install
 
-### Start front end server
+### Start front end server (from the parent project directory)
 gulp
 
 ## If Using Mysql
