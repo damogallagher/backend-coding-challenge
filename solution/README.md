@@ -32,14 +32,14 @@ If running using mysql - please create a mysql database called engage_db
 
 Update gateway-service\src\main\resources\config\application-mysql.properties and expense-service\src\main\resources\config\application-mysql.properties with your value for spring.datasource.username and spring.datasource.password
 
-### 1. Run Expense Service
+### 1. Run Expense Service (from solution directory)
 cd expense-service
 
 mvn clean install
 
 java -Dspring.profiles.active=mysql -jar target/expense-service-0.0.1-SNAPSHOT.jar
 
-### 2. Run Gateway Service
+### 2. Run Gateway Service (from solution directory)
 cd gateway-service
 
 mvn clean install
@@ -48,14 +48,14 @@ java -Dspring.profiles.active=mysql -jar target/gateway-service-0.0.1-SNAPSHOT.j
 
 
 ## If Using In Memory (h2 database)
-### 1. Run Expense Service
+### 1. Run Expense Service (from solution directory)
 cd expense-service
 
 mvn clean install
 
 java -Dspring.profiles.active=h2 -jar target/expense-service-0.0.1-SNAPSHOT.jar
 
-### 2. Run Gateway Service
+### 2. Run Gateway Service (from solution directory)
 cd gateway-service
 
 mvn clean install
