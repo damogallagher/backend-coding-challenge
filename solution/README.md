@@ -24,26 +24,51 @@ gulp
 
 ## If Using Mysql
 If running using mysql - please create a mysql database called engage_db
-Update gateway-service\src\main\resources\config\application-mysql.properties with your value for spring.datasource.username and spring.datasource.password
+
+Update gateway-service\src\main\resources\config\application-mysql.properties and expense-service\src\main\resources\config\application-mysql.properties with your value for spring.datasource.username and spring.datasource.password
 
 ### 1. Run Expense Service
 cd expense-service
+
 mvn clean install
+
 java -Dspring.profiles.active=mysql -jar target/expense-service-0.0.1-SNAPSHOT.jar
 
 ### 2. Run Gateway Service
 cd gateway-service
+
 mvn clean install
+
 java -Dspring.profiles.active=mysql -jar target/gateway-service-0.0.1-SNAPSHOT.jar
 
 
 ## If Using In Memory (h2 database)
 ### 1. Run Expense Service
 cd expense-service
+
 mvn clean install
+
 java -Dspring.profiles.active=h2 -jar target/expense-service-0.0.1-SNAPSHOT.jar
 
 ### 2. Run Gateway Service
 cd gateway-service
+
 mvn clean install
+
 java -Dspring.profiles.active=h2 -jar target/gateway-service-0.0.1-SNAPSHOT.jar
+
+
+# Run Tests and View Code Coverage Results
+### Expense Service
+cd expense-service
+
+mvn clean clover:setup test clover:aggregate clover:clover -Dsurefire.skip.tests=false;
+
+In chrome - open the file target\site\clover\index.html
+
+### Gateway Service
+cd gateway-service
+
+mvn clean clover:setup test clover:aggregate clover:clover -Dsurefire.skip.tests=false;
+
+In chrome - open the file target\site\clover\index.html
