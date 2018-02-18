@@ -72,7 +72,7 @@ app.controller("ctrlExpenses", ["$rootScope", "$scope", "config", "restalchemy",
 		var valueArr = $scope.newExpense.total_value.split(" ");
 		var tempTotalValue = valueArr[0];
 
-		if (isNaN(tempTotalValue)) {
+		if (isNaN(tempTotalValue) && !tempTotalValue.endsWith(".")) {
 			//console.log("the value " +$scope.newExpense.total_value+" is not a number");
 			$scope.totalVat = 0.0;
 			return
