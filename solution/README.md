@@ -11,10 +11,12 @@ How to run the your solution...
 # Install components
 ### Install gulp and all dependencies
 npm install -g gulp
+
 npm install
 
 ### Install bower and dependencies - jquery date ui
 npm install -g bower
+
 bower install
 
 ### Start front end server
