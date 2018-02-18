@@ -6,6 +6,11 @@ README
 2. Spring Boot 1.5.10.RELEASE
 3. Mysql / H2 DB
 
+# Project Setup
+This project uses Zuul in the gateway service to filter request to the correct microservice. The Gateway service validates that the user has a correct api key and stops the request if not.
+ 
+This gateway can be expanded in the future by adding more microservices as well as adding additional operations to be performed on the request and response messages.
+
 How to run the your solution...
 
 # Install components
